@@ -1,0 +1,46 @@
+version: '3'
+services:
+  app:
+    build:
+      context: ../
+      dockerfile: docker/django/Dockerfile
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+      - "8888:8888"
+    entrypoint: /entrypoint.sh
+    volumes:
+      - ..:/{{cookiecutter.project_slug}}
+    environment:
+      - DATABASE_HOST=db
+      - django-env=local
+
+  db:
+    build: ../docker/psql
+    environment:
+      POSTGRES_PASSWORD: adminadmin
+      POSTGRES_USER: postgres
+      POSTGRES_DB: {{cookiecutter.project_slug}}_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - {{cookiecutter.project_slug}}.db.volume:/var/lib/postgresql/data
+
+  nginx:
+    image: nginx
+    build:
+      context: ../
+      dockerfile: docker/nginx/Dockerfile
+    tty: true
+    ports:
+      - "80:80"
+    depends_on:
+      - app
+
+  redis:
+    image: redis
+      
+volumes:
+  {{cookiecutter.project_slug}}.db.volume:
+    name: {{cookiecutter.project_slug}}.db.volume

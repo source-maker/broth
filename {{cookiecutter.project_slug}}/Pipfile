@@ -1,0 +1,44 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "~=4.0"
+psycopg2-binary = "*"
+gunicorn = "*"
+djangorestframework = "*"
+markdown = "*"
+django-filter = "*"
+django-cors-headers = "*"
+django-auto-prefetching = "*"
+django-redis = "*"
+hiredis = "*"
+boto3 = "*"
+django-storages = "*"
+pillow = "*"
+django-jazzmin = "*"
+django-concurrency = "*"
+django-import-export = "*"
+celery = "*"
+django-celery-results = "*"
+djangorestframework-simplejwt = "*"
+drf-spectacular = "*"
+djoser = "*"
+social-auth-app-django = ">=5.0"
+
+[dev-packages]
+django-extensions = "*"
+coverage = "*"
+factory-boy = "*"
+flake8 = "*"
+black = "*"
+nplusone = "*"
+
+[requires]
+python_version = "{{ cookiecutter.python_version }}"
+
+[scripts]
+makemessages = "python manage.py makemessages -l ja"
+compilemessages = "python manage.py compilemessages -l ja"
+runtest = "coverage run manage.py test"

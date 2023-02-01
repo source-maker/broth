@@ -1,0 +1,12 @@
+.env
+*.pyc
+*.pyo
+*.mo
+.DS_Store
+.envrc
+
+/static_root/
+/media_root/
+/test_media_root/
+
+/local_modules/

@@ -1,0 +1,10 @@
+{
+  "project_name": "Django Web Project Name",
+  "project_slug": "{{ cookiecutter.project_name.lower()|replace(' ', '_')|replace('-', '_')|replace('.', '_')|trim() }}",
+  "author_name": "Source Maker",
+  "email": "sample@source-maker.co.jp",
+  "description": "Django website template.",
+  "python_version": "3.10.9",
+  "psql_version": "13.4",
+  "base_domain": "xxxx.com"
+}
