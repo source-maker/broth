@@ -64,7 +64,7 @@ Install and run cokkiecutter as following
 
 ```
 pip install cookiecutter
-pip install https://github.com/source-maker/broth.git
+cookiecutter https://github.com/source-maker/broth.git
 ```
 
 Answer the prompts with your options. For example,
