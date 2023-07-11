@@ -11,7 +11,7 @@ ENTRYPOINT ["/bin/bash", "-c"]
 WORKDIR /{{cookiecutter.project_slug}}
 
 RUN apt-get -y update && apt-get -y upgrade
-RUN apt-get install -y curl gettext postgresql-client dos2unix
+RUN apt-get install -y curl gettext postgresql-client dos2unix zsh
 
 ADD . /{{cookiecutter.project_slug}}
 RUN pip install --upgrade pip && pip install pipenv
