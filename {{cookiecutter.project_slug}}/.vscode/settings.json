@@ -1,11 +1,5 @@
 {
     "python.linting.enabled": true,
-    "python.pythonPath": "/usr/local/bin/python",
-    "beautify.language": {
-        "html": [
-            "htm", "html", "django-html"
-        ]
-      },
     "python.linting.flake8Enabled": true,
     "python.linting.flake8Args": [],
     "python.formatting.provider": "black",
@@ -19,10 +13,13 @@
     "python.linting.lintOnSave": true,
     "files.trimFinalNewlines": true,
     "files.trimTrailingWhitespace": true,
-    "python.sortImports.args":[
+    "isort.args": [
         "--src=${workspaceFolder}"
     ],
     "editor.codeActionsOnSave": {
         "source.organizeImports": true
+    },
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.python"
     }
 }
