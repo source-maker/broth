@@ -64,7 +64,7 @@ MIDDLEWARE = [
     "social_django.middleware.SocialAuthExceptionMiddleware",
 ]
 
-ROOT_URLCONF = "{{cookiecutter.project_slug}}.urls"
+ROOT_URLCONF = "{{cookiecutter.project_core_name}}.urls"
 
 TEMPLATES = [
     {
@@ -84,7 +84,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "{{cookiecutter.project_slug}}.wsgi.application"
+WSGI_APPLICATION = "{{cookiecutter.project_core_name}}.wsgi.application"
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
