@@ -11,7 +11,7 @@ import os
 from django.core.wsgi import get_wsgi_application
 
 ENV_VAR = os.getenv("django-env", "local")
-SETTING = "{{cookiecutter.project_slug}}.settings.{}".format(ENV_VAR)
+SETTING = "{{cookiecutter.project_core_name}}.settings.{}".format(ENV_VAR)
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", SETTING)
 

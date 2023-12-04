@@ -2,8 +2,8 @@ from django.conf import settings
 from storages.backends.s3boto3 import S3Boto3Storage
 
 
-class ImageStorage(S3Boto3Storage):
-    """画像格納クラス"""
+class PrivateStorage(S3Boto3Storage):
+    """PrivateStorage File Class"""
 
     bucket_name = settings.MEDIA_BUCKET_NAME
     location = ""
