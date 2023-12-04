@@ -4,7 +4,7 @@
   "author_name": "Source Maker",
   "email": "sample@source-maker.co.jp",
   "description": "Django website template.",
-  "python_version": "3.10.9",
-  "psql_version": "13.4",
+  "python_version": "3.11",
+  "psql_version": "13.9",
   "base_domain": "xxxx.com"
 }
