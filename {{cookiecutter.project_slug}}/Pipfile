@@ -26,7 +26,7 @@ djangorestframework-simplejwt = "*"
 drf-spectacular = "*"
 djoser = "*"
 social-auth-app-django = ">=5.0"
-dj-rest-auth = {extras = ["with_social"], version = "*"}
+dj-rest-auth = "*"
 
 [dev-packages]
 django-extensions = "*"

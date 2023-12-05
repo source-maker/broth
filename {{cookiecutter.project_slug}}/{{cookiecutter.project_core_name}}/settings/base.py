@@ -40,12 +40,7 @@ INSTALLED_APPS = [
     "social_django",
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
-    "django.contrib.sites",
-    "allauth",
-    "allauth.account",
-    "allauth.socialaccount",
     "dj_rest_auth",
-    "dj_rest_auth.registration",
     "authentication",
     "utils",
 ]
@@ -58,7 +53,6 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "allauth.account.middleware.AccountMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "social_django.middleware.SocialAuthExceptionMiddleware",
@@ -203,4 +197,3 @@ SOCIAL_AUTH_PIPELINE = (
 )
 
 CORS_ALLOW_CREDENTIALS = True
-SITE_ID = 1
