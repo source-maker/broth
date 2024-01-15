@@ -4,7 +4,7 @@ import os
 import sys
 
 ENV_VAR = os.getenv("django-env", "local")
-SETTING = "{{cookiecutter.project_slug}}.settings.{}".format(ENV_VAR)
+SETTING = "{{cookiecutter.project_core_name}}.settings.{}".format(ENV_VAR)
 
 
 def main():

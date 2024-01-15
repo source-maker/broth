@@ -40,12 +40,7 @@ INSTALLED_APPS = [
     "social_django",
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
-    "django.contrib.sites",
-    "allauth",
-    "allauth.account",
-    "allauth.socialaccount",
     "dj_rest_auth",
-    "dj_rest_auth.registration",
     "authentication",
     "utils",
 ]
@@ -58,13 +53,12 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "allauth.account.middleware.AccountMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "social_django.middleware.SocialAuthExceptionMiddleware",
 ]
 
-ROOT_URLCONF = "{{cookiecutter.project_slug}}.urls"
+ROOT_URLCONF = "{{cookiecutter.project_core_name}}.urls"
 
 TEMPLATES = [
     {
@@ -84,7 +78,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "{{cookiecutter.project_slug}}.wsgi.application"
+WSGI_APPLICATION = "{{cookiecutter.project_core_name}}.wsgi.application"
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 

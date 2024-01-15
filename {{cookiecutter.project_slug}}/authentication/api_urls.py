@@ -13,7 +13,6 @@ urlpatterns = [
     path(
         "password/reset/confirm/", dj_rest_auth_views.PasswordResetConfirmView.as_view(), name="password-reset-confirm"
     ),
-    path('signup/', include('dj_rest_auth.registration.urls')),
     path("token/refresh/", jwt_views.TokenRefreshView.as_view(), name="token-refresh"),
     path("token/verify/", jwt_views.TokenVerifyView.as_view(), name="token-verify"),
 ]
