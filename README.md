@@ -38,7 +38,7 @@ This ensures that the features are reliable and secure.
 
 ## Features
 
--   For Django 4.0
+-   For Django 5.1
 -   Quick and simple setup identical to your remote server environment
 -   Preconfigured with nginx/redis/Postgres
 -   Optimized for container development
