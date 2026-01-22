@@ -108,6 +108,26 @@ Open a web browser of your choice and access your local
 
 - Due to some technical constrain there is another server running at `http://localhost:8000`. However, you should not access it for testing/development purpose. It is only there to keep the container running.
 
+### Customizing Ports
+
+If you are running multiple projects simultaneously and need to avoid port conflicts, you can customize the ports by creating a `.env` file in the `.devcontainer` directory. Copy `.env.example` to `.env` and modify the values as needed:
+
+```
+# Port Configuration
+APP_PORT=8000        # Django app port (default: 8000)
+APP_DEBUG_PORT=8888  # Django debug port (default: 8888)
+DB_PORT=5432         # PostgreSQL port (default: 5432)
+NGINX_PORT=80        # Nginx port (default: 80)
+```
+
+For example, to run a second project, you might use:
+```
+APP_PORT=8001
+APP_DEBUG_PORT=8889
+DB_PORT=5433
+NGINX_PORT=81
+```
+
 # Basic File Structure
 - .devcontainer
   - Setting files for VSCode remote container
