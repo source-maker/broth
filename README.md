@@ -152,4 +152,3 @@ This project is licensed under the terms of the [3-Clause BSD License](./LICENSE
 # Contact
 
 - Source Maker - broth@source-maker.co.jp
-- Kohei Shinkawa - shinkawa@source-maker.co.jp
