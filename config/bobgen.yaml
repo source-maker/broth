@@ -1,0 +1,83 @@
+# Broth Framework - Bob Code Generation Configuration
+# =============================================================================
+# This file configures bobgen-psql to generate type-safe Go models from your
+# PostgreSQL schema. Run code generation with:
+#
+#   go generate ./db/...
+#
+# Prerequisites:
+#   - A running PostgreSQL database with your schema applied
+#   - The PSQL_DSN environment variable set, e.g.:
+#     export PSQL_DSN="postgres://user:pass@localhost:5432/mydb?sslmode=disable"
+#
+# Documentation: https://bob.stephenafamo.com/docs/code-generation/psql/
+# =============================================================================
+
+# ---------------------------------------------------------------------------
+# PostgreSQL driver settings
+# ---------------------------------------------------------------------------
+psql:
+  # Database connection string. Uses the PSQL_DSN environment variable so that
+  # credentials are never committed to version control.
+  dsn: "${PSQL_DSN}"
+
+  # Schemas to introspect. Most projects only need "public".
+  schemas:
+    - public
+
+  # UUID package: "gofrs" (github.com/gofrs/uuid) or "google" (github.com/google/uuid).
+  uuid_pkg: "google"
+
+  # Number of parallel workers for fetching table metadata.
+  concurrency: 10
+
+  # Exclude the goose migrations table from code generation.
+  except:
+    public.goose_db_version:
+
+# ---------------------------------------------------------------------------
+# Plugin settings
+# ---------------------------------------------------------------------------
+# "all" enables models, factory, enums, dbinfo, dberrors, and query helpers.
+# Use "default" for a smaller set, or "none" to pick individually.
+plugins_preset: "all"
+
+# ---------------------------------------------------------------------------
+# Struct tag generation
+# ---------------------------------------------------------------------------
+# Tags to add to generated struct fields (e.g., json, db, toml).
+tags:
+  - json
+
+# Casing for struct tag keys: "snake", "camel", or "title".
+struct_tag_casing: "snake"
+
+# ---------------------------------------------------------------------------
+# Test generation
+# ---------------------------------------------------------------------------
+# Set to true to skip generating test helper / factory files.
+no_tests: false
+
+# ---------------------------------------------------------------------------
+# Advanced options (uncomment as needed)
+# ---------------------------------------------------------------------------
+
+# Custom type aliases for database types:
+# types:
+#   citext:
+#     alias_of: "string"
+
+# Table/column aliases for better Go names:
+# aliases:
+#   users:
+#     columns:
+#       id: "ID"
+
+# Manual relationship definitions for complex joins:
+# relationships:
+#   users:
+#     - name: "users_to_posts"
+#       sides:
+#         - from: "users"
+#           to: "posts"
+#           columns: [[id, author_id]]

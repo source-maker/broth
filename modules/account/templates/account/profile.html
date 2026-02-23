@@ -1,0 +1,17 @@
+{{define "title"}}Profile{{end}}
+{{define "content"}}
+<h1>Profile</h1>
+{{if .User}}
+<dl>
+    <dt>ID</dt><dd>{{.User.ID}}</dd>
+    <dt>Email</dt><dd>{{.User.Email}}</dd>
+    <dt>Name</dt><dd>{{.User.Name}}</dd>
+</dl>
+<form method="POST" action="/account/logout">
+    <input type="hidden" name="_csrf_token" value="{{.CSRFToken}}">
+    <button type="submit">Logout</button>
+</form>
+{{else}}
+<p>User not found. <a href="/account/login">Login</a></p>
+{{end}}
+{{end}}

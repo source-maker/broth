@@ -1,0 +1,18 @@
+{{define "title"}}Login{{end}}
+{{define "content"}}
+<h1>Login</h1>
+{{if .Error}}<div class="flash-error">{{.Error}}</div>{{end}}
+<form method="POST" action="/account/login">
+    <input type="hidden" name="_csrf_token" value="{{.CSRFToken}}">
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" value="{{if .Form}}{{.Form.Email}}{{end}}" required>
+    {{if .Errors}}{{range .Errors.email}}<div class="field-error">{{.}}</div>{{end}}{{end}}
+
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" required>
+    {{if .Errors}}{{range .Errors.password}}<div class="field-error">{{.}}</div>{{end}}{{end}}
+
+    <button type="submit">Login</button>
+</form>
+<p>Don't have an account? <a href="/account/register">Register</a></p>
+{{end}}

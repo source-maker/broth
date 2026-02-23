@@ -1,0 +1,28 @@
+{{define "base"}}<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{template "title" .}} - Broth</title>
+    <style>
+        body { font-family: system-ui, sans-serif; max-width: 600px; margin: 2rem auto; padding: 0 1rem; }
+        .flash-error { color: #c00; padding: 0.5rem; border: 1px solid #c00; margin-bottom: 1rem; }
+        .field-error { color: #c00; font-size: 0.875rem; }
+        label { display: block; margin-top: 1rem; font-weight: bold; }
+        input[type="text"], input[type="email"], input[type="password"] { width: 100%; padding: 0.5rem; margin-top: 0.25rem; box-sizing: border-box; }
+        button { margin-top: 1rem; padding: 0.5rem 1.5rem; }
+        nav a { margin-right: 1rem; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/account/login">Login</a>
+        <a href="/account/register">Register</a>
+    </nav>
+    <hr>
+    {{template "content" .}}
+</body>
+</html>{{end}}
+{{define "title"}}Page{{end}}
+{{define "content"}}{{end}}
