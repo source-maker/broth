@@ -3,6 +3,8 @@ package account
 import (
 	"encoding/json"
 	"net/http"
+	"net/url"
+	"strings"
 
 	"github.com/source-maker/broth/auth"
 	"github.com/source-maker/broth/form"
@@ -69,10 +71,7 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	next := r.URL.Query().Get("next")
-	if next == "" {
-		next = "/account/profile"
-	}
-	http.Redirect(w, r, next, http.StatusSeeOther)
+	http.Redirect(w, r, sanitizeRedirectTarget(next, "/account/profile"), http.StatusSeeOther)
 }
 
 // ShowRegister renders the registration page.
@@ -216,4 +215,20 @@ type apiUserResponse struct {
 	Email string   `json:"email"`
 	Name  string   `json:"name"`
 	Roles []string `json:"roles"`
+}
+
+func sanitizeRedirectTarget(next string, fallback string) string {
+	if next == "" {
+		return fallback
+	}
+	if !strings.HasPrefix(next, "/") || strings.HasPrefix(next, "//") {
+		return fallback
+	}
+
+	u, err := url.Parse(next)
+	if err != nil || u.IsAbs() || u.Host != "" {
+		return fallback
+	}
+
+	return next
 }

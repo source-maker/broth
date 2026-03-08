@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"time"
 )
 
 func TestRateLimit_AllowsNormalTraffic(t *testing.T) {
@@ -145,6 +146,35 @@ func TestNewRateLimiter(t *testing.T) {
 	// Should allow first request
 	if !rl.Allow("1.2.3.4") {
 		t.Error("first request should be allowed")
+	}
+}
+
+func TestRateLimiter_CleansUpStaleEntries(t *testing.T) {
+	t.Parallel()
+
+	now := time.Unix(1_700_000_000, 0)
+	rl := NewRateLimiter(10, 20)
+	rl.now = func() time.Time { return now }
+	rl.cleanupAfter = time.Minute
+	rl.cleanupEvery = 1
+
+	if !rl.Allow("1.2.3.4") {
+		t.Fatal("first request should be allowed")
+	}
+	if got := len(rl.limiters); got != 1 {
+		t.Fatalf("len(limiters) = %d, want 1", got)
+	}
+
+	now = now.Add(2 * time.Minute)
+	if !rl.Allow("5.6.7.8") {
+		t.Fatal("second request should be allowed")
+	}
+
+	if _, ok := rl.limiters["1.2.3.4"]; ok {
+		t.Error("stale limiter should be removed during cleanup")
+	}
+	if _, ok := rl.limiters["5.6.7.8"]; !ok {
+		t.Error("active limiter should remain")
 	}
 }
 

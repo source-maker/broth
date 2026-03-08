@@ -1,8 +1,10 @@
 package middleware
 
 import (
+	"bufio"
 	"io"
 	"log/slog"
+	"net"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -168,4 +170,42 @@ func TestLoggerMiddlewareDefaultStatusWhenNoWriteHeader(t *testing.T) {
 	if !strings.Contains(logOutput, "200") {
 		t.Errorf("log should contain status '200' for implicit OK, got: %s", logOutput)
 	}
+}
+
+func TestStatusWriterFlushDelegates(t *testing.T) {
+	t.Parallel()
+
+	rw := &flushRecorder{ResponseRecorder: httptest.NewRecorder()}
+	sw := &statusWriter{ResponseWriter: rw, status: http.StatusOK}
+
+	sw.Flush()
+
+	if !rw.flushed {
+		t.Error("Flush should delegate to the wrapped ResponseWriter")
+	}
+}
+
+func TestStatusWriterUnwrapReturnsOriginalWriter(t *testing.T) {
+	t.Parallel()
+
+	rec := httptest.NewRecorder()
+	sw := &statusWriter{ResponseWriter: rec, status: http.StatusOK}
+
+	if got := sw.Unwrap(); got != rec {
+		t.Errorf("Unwrap() = %T, want original recorder", got)
+	}
+}
+
+type flushRecorder struct {
+	*httptest.ResponseRecorder
+	flushed bool
+}
+
+func (f *flushRecorder) Flush() {
+	f.flushed = true
+	f.ResponseRecorder.Flush()
+}
+
+func (f *flushRecorder) Hijack() (net.Conn, *bufio.ReadWriter, error) {
+	return nil, nil, http.ErrNotSupported
 }

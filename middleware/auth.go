@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"encoding/json"
 	"errors"
 	"net/http"
 	"strings"
@@ -118,7 +119,9 @@ func handleAuthError(w http.ResponseWriter, r *http.Request, rc RequestContext, 
 	case ContextAPI:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(http.StatusUnauthorized)
-		w.Write([]byte(`{"error":"` + err.Error() + `"}`))
+		_ = json.NewEncoder(w).Encode(map[string]string{
+			"error": err.Error(),
+		})
 	case ContextSSR:
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
 	}
