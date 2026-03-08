@@ -1,6 +1,8 @@
 package middleware
 
 import (
+	"bufio"
+	"net"
 	"net/http"
 	"time"
 
@@ -101,6 +103,36 @@ func (sw *sessionWriter) Write(b []byte) (int, error) {
 		sw.headerWritten = true
 	}
 	return sw.ResponseWriter.Write(b)
+}
+
+func (sw *sessionWriter) Flush() {
+	if !sw.headerWritten {
+		sw.saveSession()
+		sw.headerWritten = true
+	}
+	if flusher, ok := sw.ResponseWriter.(http.Flusher); ok {
+		flusher.Flush()
+	}
+}
+
+func (sw *sessionWriter) Hijack() (net.Conn, *bufio.ReadWriter, error) {
+	hijacker, ok := sw.ResponseWriter.(http.Hijacker)
+	if !ok {
+		return nil, nil, http.ErrNotSupported
+	}
+	return hijacker.Hijack()
+}
+
+func (sw *sessionWriter) Push(target string, opts *http.PushOptions) error {
+	pusher, ok := sw.ResponseWriter.(http.Pusher)
+	if !ok {
+		return http.ErrNotSupported
+	}
+	return pusher.Push(target, opts)
+}
+
+func (sw *sessionWriter) Unwrap() http.ResponseWriter {
+	return sw.ResponseWriter
 }
 
 func (sw *sessionWriter) saveSession() {

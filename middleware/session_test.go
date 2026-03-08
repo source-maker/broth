@@ -1,11 +1,14 @@
 package middleware
 
 import (
+	"bufio"
 	"crypto/rand"
 	"io"
+	"net"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"time"
 
 	"github.com/source-maker/broth/session"
 )
@@ -298,4 +301,71 @@ func TestSessionMiddleware_InvalidCookieCreatesNew(t *testing.T) {
 	if !gotSession.IsNew {
 		t.Error("invalid cookie should result in a new session")
 	}
+}
+
+func TestSessionWriterFlushDelegatesAndSavesSession(t *testing.T) {
+	t.Parallel()
+
+	store := testCookieStore(t)
+	sess := &session.Session{
+		ID:        session.GenerateID(),
+		Data:      map[string]any{"hello": "world"},
+		CreatedAt: time.Now(),
+		IsNew:     true,
+	}
+	rw := &sessionFlushRecorder{ResponseRecorder: httptest.NewRecorder()}
+	sw := &sessionWriter{
+		ResponseWriter: rw,
+		sess:           sess,
+		store:          store,
+		cfg: SessionConfig{
+			CookieName: "_broth_session",
+			SameSite:   http.SameSiteLaxMode,
+			Path:       "/",
+		},
+	}
+
+	sw.Flush()
+
+	if !rw.flushed {
+		t.Error("Flush should delegate to the wrapped ResponseWriter")
+	}
+	if !sw.headerWritten {
+		t.Error("Flush should mark headers as written after saving session")
+	}
+
+	found := false
+	for _, c := range rw.Result().Cookies() {
+		if c.Name == "_broth_session" {
+			found = true
+		}
+	}
+	if !found {
+		t.Error("Flush should save the session cookie before flushing")
+	}
+}
+
+func TestSessionWriterUnwrapReturnsOriginalWriter(t *testing.T) {
+	t.Parallel()
+
+	rec := httptest.NewRecorder()
+	sw := &sessionWriter{ResponseWriter: rec}
+
+	if got := sw.Unwrap(); got != rec {
+		t.Errorf("Unwrap() = %T, want original recorder", got)
+	}
+}
+
+type sessionFlushRecorder struct {
+	*httptest.ResponseRecorder
+	flushed bool
+}
+
+func (f *sessionFlushRecorder) Flush() {
+	f.flushed = true
+	f.ResponseRecorder.Flush()
+}
+
+func (f *sessionFlushRecorder) Hijack() (net.Conn, *bufio.ReadWriter, error) {
+	return nil, nil, http.ErrNotSupported
 }
